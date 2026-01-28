@@ -1,0 +1,53 @@
+{
+  "name": "microservice-name",
+  "version": "0.1.0",
+  "description": "Microservice boilerplate with Node.js, Fastify, TypeScript, Prisma, and SQL Server",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.5.2",
+  "engines": {
+    "node": "20.15.1",
+    "npm": "11.5.2"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@fastify/swagger": "8.14.0",
+    "@fastify/swagger-ui": "2.1.0",
+    "@prisma/client": "6.14.0",
+    "ajv": "8.17.1",
+    "dotenv": "16.4.5",
+    "fastify": "5.6.0",
+    "pino": "8.21.0",
+    "undici": "6.19.0"
+  },
+  "devDependencies": {
+    "@types/jest": "29.5.14",
+    "@types/node": "20.15.1",
+    "@typescript-eslint/eslint-plugin": "8.1.0",
+    "@typescript-eslint/parser": "8.1.0",
+    "eslint": "9.8.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.29.1",
+    "jest": "29.7.0",
+    "prettier": "3.3.3",
+    "prisma": "6.14.0",
+    "ts-jest": "29.2.5",
+    "tsx": "4.19.2",
+    "typescript": "5.5.4"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}
