@@ -7,10 +7,10 @@ process.env.SERVICE_NAME = process.env.SERVICE_NAME ?? 'microservice-name';
 process.env.PORT = process.env.PORT ?? '3000';
 process.env.LOG_LEVEL = process.env.LOG_LEVEL ?? 'info';
 
-let app: Awaited<ReturnType<typeof import('../../../src/app.js').buildApp>>;
+let app: Awaited<ReturnType<typeof import('@src/app.js').buildApp>>;
 
 beforeAll(async () => {
-  const mod = await import('../../../src/app.js');
+  const mod = await import('@src/app.js');
   app = await mod.buildApp();
   await app.ready();
 });

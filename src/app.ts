@@ -1,12 +1,12 @@
 import Fastify from 'fastify';
 
-import { registerHealthRoutes } from './controllers/health/health.routes.js';
-import { registerUserRoutes } from './controllers/users/user.routes.js';
-import { logger } from './config/logger.js';
-import { registerSwagger } from './config/swagger.js';
-import { registerAuthPlugin } from './plugins/auth.plugin.js';
-import { registerErrorHandler } from './plugins/error-handler.plugin.js';
-import { registerValidationPlugin } from './plugins/validation.plugin.js';
+import { registerHealthRoutes } from '@src/controllers/health/health.routes.js';
+import { registerUserRoutes } from '@src/controllers/users/user.routes.js';
+import { logger } from '@src/config/logger.js';
+import { registerSwagger } from '@src/config/swagger.js';
+import { registerAuthPlugin } from '@src/plugins/auth.plugin.js';
+import { registerErrorHandler } from '@src/plugins/error-handler.plugin.js';
+import { registerValidationPlugin } from '@src/plugins/validation.plugin.js';
 
 export async function buildApp() {
   const app = Fastify({

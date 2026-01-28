@@ -1,4 +1,4 @@
-import { validateWithAjv } from '../../../src/utils/validation.utils.js';
+import { validateWithAjv } from '@src/utils/validation.utils.js';
 
 const schema = {
   type: 'object',

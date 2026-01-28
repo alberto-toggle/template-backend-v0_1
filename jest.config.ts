@@ -14,6 +14,7 @@ const config: Config = {
     ]
   },
   moduleNameMapper: {
+    '^@src/(.*)$': '<rootDir>/src/$1',
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   testMatch: ['**/tests/**/*.test.ts'],

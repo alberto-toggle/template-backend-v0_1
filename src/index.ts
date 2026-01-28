@@ -1,5 +1,5 @@
-import { env } from './config/env.js';
-import { buildApp } from './app.js';
+import { env } from '@src/config/env.js';
+import { buildApp } from '@src/app.js';
 
 async function start() {
   const app = await buildApp();

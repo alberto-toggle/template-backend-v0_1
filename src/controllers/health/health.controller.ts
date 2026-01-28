@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { env } from '../../config/env.js';
+import { env } from '@src/config/env.js';
 
 export async function getHealthHandler(_request: FastifyRequest, reply: FastifyReply) {
   reply.send({

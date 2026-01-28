@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import type { CreateUserDto } from '../../dto/users/create-user.dto.js';
-import { createUser, getUserById } from '../../services/users/user.service.js';
+import type { CreateUserDto } from '@src/dto/users/create-user.dto.js';
+import { createUser, getUserById } from '@src/services/users/user.service.js';
 
 export async function createUserHandler(
   request: FastifyRequest<{ Body: CreateUserDto }>,

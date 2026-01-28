@@ -5,13 +5,13 @@ const databaseUrl =
 process.env.DATABASE_URL = databaseUrl;
 
 let prisma: typeof import('@prisma/client').PrismaClient;
-let userService: typeof import('../../../src/services/users/user.service.js');
+let userService: typeof import('@src/services/users/user.service.js');
 
 beforeAll(async () => {
   const prismaMod = await import('@prisma/client');
   prisma = new prismaMod.PrismaClient();
   await prisma.user.deleteMany();
-  userService = await import('../../../src/services/users/user.service.js');
+  userService = await import('@src/services/users/user.service.js');
 });
 
 afterAll(async () => {
