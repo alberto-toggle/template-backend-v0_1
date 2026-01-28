@@ -1,0 +1,10 @@
+services:
+  api:
+    image: microservice-name:latest
+    environment:
+      SERVICE_NAME: ${SERVICE_NAME}
+      PORT: ${PORT}
+      LOG_LEVEL: ${LOG_LEVEL}
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "3000:3000"
