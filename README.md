@@ -30,6 +30,34 @@ Variables principales:
 docker compose up -d db
 ```
 
+### Usar SQL Server remoto (opcional)
+
+Puedes usar una base de datos remota y omitir el contenedor local.
+
+1) Configura `DATABASE_URL` apuntando al host remoto en tu `.env` o `.env.local`.
+2) Levanta solo la app:
+
+```bash
+docker compose up -d api
+```
+
+También puedes ejecutar el servicio en local (sin Docker) con `npm run dev`, siempre que `DATABASE_URL` apunte a la base remota.
+
+### Persistencia local de datos (opcional)
+
+Si quieres conservar los datos de SQL Server entre reinicios del contenedor, crea un volumen local en `./data/sqlserver` (no se versiona y está en `.gitignore`) y móntalo a `/var/opt/mssql`.
+
+```bash
+mkdir -p data/sqlserver
+```
+
+Al borrar el contenedor, los datos quedan en esa carpeta. Para limpiar todo:
+
+```bash
+docker compose down -v
+rm -rf data/sqlserver
+```
+
 ## Instalación
 
 ```bash

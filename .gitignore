@@ -21,6 +21,9 @@ logs/
 prisma/migrations/*
 !prisma/migrations/.gitkeep
 
+# Local volumes
+data/
+
 # Tests / coverage
 coverage/
 
