@@ -1,27 +1,44 @@
 services:
-  db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: microservice_db
-    ports:
-      - "1433:1433"
+  sqlserver:
+    container_name: backoffice-sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest 
+    platform: linux/amd64
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+      - ACCEPT_EULA=Y 
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      - MSSQL_PID=Developer 
+      - MSSQL_COLLATION=Modern_Spanish_CI_AS 
+    ports:
+      - "1433:1433" 
     volumes:
-      - ./data/sqlserver:/var/opt/mssql
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    container_name: microservice_api
-    ports:
-      - "3000:3000"
-    environment:
-      SERVICE_NAME: ${SERVICE_NAME}
-      PORT: ${PORT}
-      LOG_LEVEL: ${LOG_LEVEL}
-      DATABASE_URL: ${DATABASE_URL}
-    depends_on:
-      - db
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backoffice-net
+
+  prisma-studio:
+    image: node:18-slim
+    container_name: backoffice-prisma-studio
+    working_dir: /app
     volumes:
       - .:/app
+    command: npx prisma studio
+    ports:
+      - "5555:5555"
+    environment:
+      - DATABASE_URL=sqlserver://sqlserver:1433;database=${MSSQL_DB_NAME};user=sa;password=${MSSQL_SA_PASSWORD};encrypt=false;trustServerCertificate=true
+    depends_on:
+      - sqlserver 
+    networks:
+      - backoffice-net
+
+volumes:
+  sqlserver_data:
+
+networks:
+  backoffice-net:
+    driver: bridge
