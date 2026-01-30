@@ -1,7 +1,4 @@
-import Ajv, { type JSONSchemaType } from 'ajv';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { Ajv, type JSONSchemaType } from 'ajv';
 
 export interface EnvConfig {
   SERVICE_NAME: string;
