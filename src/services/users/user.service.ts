@@ -1,5 +1,4 @@
 import type { Prisma, User } from '@prisma/client';
-
 import { prisma } from '@src/config/database.js';
 
 export async function createUser(data: Prisma.UserCreateInput): Promise<User> {
