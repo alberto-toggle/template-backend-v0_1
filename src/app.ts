@@ -1,5 +1,4 @@
 import Fastify from 'fastify';
-
 import { registerHealthRoutes } from '@src/controllers/health/health.routes.js';
 import { registerUserRoutes } from '@src/controllers/users/user.routes.js';
 import { logger } from '@src/config/logger.js';

@@ -1,5 +1,4 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-
 import type { CreateUserDto } from '@src/dto/users/create-user.dto.js';
 import { createUser, getUserById } from '@src/services/users/user.service.js';
 

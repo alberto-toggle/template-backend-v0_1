@@ -1,5 +1,4 @@
 import type { FastifyInstance } from 'fastify';
-
 import { createUserHandler, getUserByIdHandler } from '@src/controllers/users/user.controller.js';
 
 export async function registerUserRoutes(fastify: FastifyInstance) {
