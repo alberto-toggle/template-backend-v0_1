@@ -1,11 +1,11 @@
 # Microservice Boilerplate (Node.js + Fastify + TypeScript)
 
-Arquetipo para microservicios con Node.js 20, Fastify, TypeScript, Prisma y SQL Server.
+Arquetipo para microservicios con Node.js 22, Fastify, TypeScript, Prisma y SQL Server.
 
 ## Requisitos
 
-- Node.js 20.15.1 LTS
-- npm 10.x (incluido con Node 20.15.1)
+- Node.js 22.22.0 LTS
+- npm 10.x (incluido con Node 22.22.0)
 - Docker + Docker Compose (para SQL Server local)
 
 ## Variables de entorno

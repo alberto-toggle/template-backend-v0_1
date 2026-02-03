@@ -1,4 +1,4 @@
-FROM node:20.15.1-bookworm-slim AS base
+FROM node:22.22.0-bookworm-slim AS base
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install
@@ -7,7 +7,7 @@ COPY src ./src
 COPY prisma ./prisma
 RUN npm run build
 
-FROM node:20.15.1-bookworm-slim AS runtime
+FROM node:22.22.0-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 COPY package.json package-lock.json* ./
