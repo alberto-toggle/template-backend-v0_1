@@ -5,7 +5,7 @@ Arquetipo para microservicios con Node.js 20, Fastify, TypeScript, Prisma y SQL 
 ## Requisitos
 
 - Node.js 20.15.1 LTS
-- npm 11.5.2
+- npm 10.x (incluido con Node 20.15.1)
 - Docker + Docker Compose (para SQL Server local)
 
 ## Variables de entorno
@@ -22,40 +22,44 @@ Variables principales:
 - `PORT`: puerto del servidor
 - `LOG_LEVEL`: nivel de log para Pino
 - `MSSQL_SA_PASSWORD`: password del usuario `sa` para SQL Server
-- `DATABASE_URL`: conexión para Prisma (SQL Server)
+- `MSSQL_DB_NAME`: nombre de la base de datos
+- `DATABASE_URL`: conexión para Prisma (SQL Server, formato `sqlserver://host:port;database=...;user=...;password=...`)
 
 ## Levantar SQL Server (Docker Compose)
 
 ```bash
-docker compose up -d db
+docker compose up -d sqlserver
 ```
+
+### Prisma Studio (opcional)
+
+Prisma Studio es una UI para inspeccionar y editar datos.
+
+```bash
+docker compose up -d prisma-studio
+```
+
+Abre `http://localhost:5555`.
 
 ### Usar SQL Server remoto (opcional)
 
 Puedes usar una base de datos remota y omitir el contenedor local.
 
 1) Configura `DATABASE_URL` apuntando al host remoto en tu `.env` o `.env.local`.
-2) Levanta solo la app:
+2) Asegura credenciales y permisos en el servidor remoto (usuario, password y red/VPN).
+3) No levantes el contenedor `sqlserver`.
+4) Levanta solo la app:
 
 ```bash
-docker compose up -d api
+npm run dev
 ```
-
-También puedes ejecutar el servicio en local (sin Docker) con `npm run dev`, siempre que `DATABASE_URL` apunte a la base remota.
 
 ### Persistencia local de datos (opcional)
 
-Si quieres conservar los datos de SQL Server entre reinicios del contenedor, crea un volumen local en `./data/sqlserver` (no se versiona y está en `.gitignore`) y móntalo a `/var/opt/mssql`.
-
-```bash
-mkdir -p data/sqlserver
-```
-
-Al borrar el contenedor, los datos quedan en esa carpeta. Para limpiar todo:
+Este proyecto usa un volumen Docker llamado `sqlserver_data`. El comando de limpieza elimina contenedores y borra el volumen, por lo que se pierden los datos locales. Úsalo solo cuando quieras un entorno limpio desde cero:
 
 ```bash
 docker compose down -v
-rm -rf data/sqlserver
 ```
 
 ## Instalación
@@ -68,7 +72,7 @@ npm install
 
 ```bash
 npm run prisma:generate
-npm run prisma:migrate
+npx prisma db push
 npm run prisma:seed
 ```
 
