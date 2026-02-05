@@ -4,10 +4,10 @@
   "description": "Microservice boilerplate with Node.js, Fastify, TypeScript, Prisma, and SQL Server",
   "private": true,
   "type": "module",
-  "packageManager": "npm@10.7.0",
+  "packageManager": "npm@11.9.0",
   "engines": {
     "node": "22.22.0",
-    "npm": "10.x"
+    "npm": "11.9.0"
   },
   "scripts": {
     "dev": "node --env-file=.env --import tsx --watch src/index.ts",
