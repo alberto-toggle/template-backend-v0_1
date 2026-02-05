@@ -2,10 +2,12 @@ import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import importPlugin from 'eslint-plugin-import';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 export default [
   {
-    ignores: ['dist/', 'node_modules/', 'prisma/']
+    ignores: ['dist/', 'node_modules/', 'prisma/', 'configuration/', 'scripts/', 'environment/']
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -20,7 +22,8 @@ export default [
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: './tsconfig.json',
+        project: 'configuration/tsconfig.eslint.json',
+        tsconfigRootDir: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'),
         sourceType: 'module'
       }
     },

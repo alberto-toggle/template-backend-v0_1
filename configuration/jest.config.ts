@@ -2,6 +2,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
   preset: 'ts-jest/presets/default-esm',
+  rootDir: '..',
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
   transform: {
@@ -9,7 +10,7 @@ const config: Config = {
       'ts-jest',
       {
         useESM: true,
-        tsconfig: 'tsconfig.json'
+        tsconfig: 'configuration/tsconfig.json'
       }
     ]
   },

@@ -6,9 +6,11 @@ Arquetipo para microservicios con Node.js 22, Fastify, TypeScript, Prisma y SQL 
 
 - Node.js 22.22.0 LTS
 - npm 11.9.0
+
 ```bash
-npm install -g npm@11.9.0 
+npm install -g npm@11.9.0
 ```
+
 - Docker + Docker Compose (para SQL Server local)
 
 ## Variables de entorno
@@ -31,7 +33,7 @@ Variables principales:
 ## Levantar SQL Server (Docker Compose)
 
 ```bash
-docker compose up -d sqlserver
+docker compose -f environment/docker-compose.yml up -d sqlserver
 ```
 
 ### Prisma Studio (opcional)
@@ -39,7 +41,7 @@ docker compose up -d sqlserver
 Prisma Studio es una UI para inspeccionar y editar datos.
 
 ```bash
-docker compose up -d prisma-studio
+docker compose -f environment/docker-compose.yml up -d prisma-studio
 ```
 
 Abre `http://localhost:5555`.
@@ -48,10 +50,10 @@ Abre `http://localhost:5555`.
 
 Puedes usar una base de datos remota y omitir el contenedor local.
 
-1) Configura `DATABASE_URL` apuntando al host remoto en tu `.env` o `.env.local`.
-2) Asegura credenciales y permisos en el servidor remoto (usuario, password y red/VPN).
-3) No levantes el contenedor `sqlserver`.
-4) Levanta solo la app:
+1. Configura `DATABASE_URL` apuntando al host remoto en tu `.env` o `.env.local`.
+2. Asegura credenciales y permisos en el servidor remoto (usuario, password y red/VPN).
+3. No levantes el contenedor `sqlserver`.
+4. Levanta solo la app:
 
 ```bash
 npm run dev
@@ -62,7 +64,7 @@ npm run dev
 Este proyecto usa un volumen Docker llamado `sqlserver_data`. El comando de limpieza elimina contenedores y borra el volumen, por lo que se pierden los datos locales. Úsalo solo cuando quieras un entorno limpio desde cero:
 
 ```bash
-docker compose down -v
+docker compose -f environment/docker-compose.yml down -v
 ```
 
 ## Instalación
