@@ -1,4 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import { StatusCodes } from 'http-status-codes';
 import type { AuthLoginDto } from '@src/dto/auth/login.dto.js';
 import { authenticateWithProvider, generateAccessToken } from '@src/services/auth/auth.service.js';
 import { getUserByEmail } from '@src/services/users/user.service.js';
@@ -21,7 +22,7 @@ export async function loginHandler(
 
   const externalAuth = await authenticateWithProvider({ email, password });
   if (!externalAuth.ok) {
-    const status = 401;
+    const status = StatusCodes.UNAUTHORIZED;
     reply.status(status).send(
       buildError({
         status,
@@ -35,7 +36,7 @@ export async function loginHandler(
   const normalizedEmail = externalAuth.email ?? email.trim().toLowerCase();
   const user = await getUserByEmail(normalizedEmail);
   if (!user) {
-    const status = 403;
+    const status = StatusCodes.FORBIDDEN;
     reply.status(status).send(
       buildError({
         status,
@@ -47,7 +48,7 @@ export async function loginHandler(
   }
 
   if (user.status !== 'ACTIVE') {
-    const status = 403;
+    const status = StatusCodes.FORBIDDEN;
     reply.status(status).send(
       buildError({
         status,
@@ -61,7 +62,7 @@ export async function loginHandler(
   const permissions = await listModulePermissionsByUserId(user.id);
   const modules = permissions.map((p) => p.moduleCode);
   if (modules.length === 0) {
-    const status = 403;
+    const status = StatusCodes.FORBIDDEN;
     reply.status(status).send(
       buildError({
         status,
@@ -80,9 +81,9 @@ export async function loginHandler(
     ad_object_id: user.adObjectId ?? null
   });
 
-  reply.status(200).send(
+  reply.status(StatusCodes.OK).send(
     buildSuccess({
-      status: 200,
+      status: StatusCodes.OK,
       data: {
         access_token: token,
         expires_in: expiresIn,
@@ -97,7 +98,7 @@ export async function meHandler(request: FastifyRequest, reply: FastifyReply) {
   const userId = typeof claims.user_id === 'string' ? claims.user_id : null;
 
   if (!userId) {
-    const status = 401;
+    const status = StatusCodes.UNAUTHORIZED;
     reply.status(status).send(
       buildError({
         status,
@@ -110,7 +111,7 @@ export async function meHandler(request: FastifyRequest, reply: FastifyReply) {
 
   const access = await ensureActiveUser(userId);
   if (!access.ok) {
-    const status = 403;
+    const status = StatusCodes.FORBIDDEN;
     reply.status(status).send(
       buildError({
         status,
@@ -130,9 +131,9 @@ export async function meHandler(request: FastifyRequest, reply: FastifyReply) {
   const permissions = await listModulePermissionsByUserId(access.user.id);
   const modules = permissions.map((p) => p.moduleCode);
 
-  reply.status(200).send(
+  reply.status(StatusCodes.OK).send(
     buildSuccess({
-      status: 200,
+      status: StatusCodes.OK,
       data: {
         user_id: access.user.id,
         email: access.user.email,
@@ -149,7 +150,7 @@ export async function permissionsHandler(request: FastifyRequest, reply: Fastify
   const userId = typeof claims.user_id === 'string' ? claims.user_id : null;
 
   if (!userId) {
-    const status = 401;
+    const status = StatusCodes.UNAUTHORIZED;
     reply.status(status).send(
       buildError({
         status,
@@ -162,7 +163,7 @@ export async function permissionsHandler(request: FastifyRequest, reply: Fastify
 
   const access = await ensureActiveUser(userId);
   if (!access.ok) {
-    const status = 403;
+    const status = StatusCodes.FORBIDDEN;
     reply.status(status).send(
       buildError({
         status,
@@ -182,7 +183,7 @@ export async function permissionsHandler(request: FastifyRequest, reply: Fastify
   const permissions = await listModulePermissionsByUserId(access.user.id);
   const modules = permissions.map((p) => p.moduleCode);
   if (modules.length === 0) {
-    const status = 403;
+    const status = StatusCodes.FORBIDDEN;
     reply.status(status).send(
       buildError({
         status,
@@ -193,9 +194,9 @@ export async function permissionsHandler(request: FastifyRequest, reply: Fastify
     return;
   }
 
-  reply.status(200).send(
+  reply.status(StatusCodes.OK).send(
     buildSuccess({
-      status: 200,
+      status: StatusCodes.OK,
       data: {
         user_id: access.user.id,
         modules

@@ -1,5 +1,6 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
+import { StatusCodes } from 'http-status-codes';
 import { ErrorCodes } from '@src/constants/error-codes.js';
 import { buildError } from '@src/utils/response-builder.js';
 import { assertJwtConfig, getJwtVerifyKey, getJwtVerifyOptions } from '@src/services/auth/jwt.utils.js';
@@ -13,7 +14,7 @@ export async function registerAuthPlugin(fastify: FastifyInstance) {
     async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const header = request.headers.authorization;
       if (!header || !header.startsWith('Bearer ')) {
-        const status = 401;
+        const status = StatusCodes.UNAUTHORIZED;
         reply.status(status).send(
           buildError({
             status,
@@ -26,7 +27,7 @@ export async function registerAuthPlugin(fastify: FastifyInstance) {
 
       const token = header.slice('Bearer '.length).trim();
       if (!token) {
-        const status = 401;
+        const status = StatusCodes.UNAUTHORIZED;
         reply.status(status).send(
           buildError({
             status,
@@ -41,7 +42,7 @@ export async function registerAuthPlugin(fastify: FastifyInstance) {
         const payload = jwt.verify(token, getJwtVerifyKey(), getJwtVerifyOptions());
         request.auth = payload as unknown as Record<string, unknown>;
       } catch {
-        const status = 401;
+        const status = StatusCodes.UNAUTHORIZED;
         reply.status(status).send(
           buildError({
             status,

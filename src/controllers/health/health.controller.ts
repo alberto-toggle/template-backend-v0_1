@@ -1,4 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import { StatusCodes } from 'http-status-codes';
 import { env } from '@src/config/env.js';
 import { buildSuccess } from '@src/utils/response-builder.js';
 
@@ -11,9 +12,9 @@ export async function getHealthHandler(_request: FastifyRequest, reply: FastifyR
     timestamp: new Date().toISOString()
   };
 
-  reply.status(200).send(
+  reply.status(StatusCodes.OK).send(
     buildSuccess({
-      status: 200,
+      status: StatusCodes.OK,
       data: payload
     })
   );
