@@ -1,4 +1,5 @@
 import 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 declare module 'fastify' {
   interface FastifyRequest {
