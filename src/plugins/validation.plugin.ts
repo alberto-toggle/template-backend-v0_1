@@ -1,7 +1,6 @@
 import type { FastifyInstance } from 'fastify';
-import { createUserBodySchema, userIdParamsSchema } from '@src/schemas/user.schema.js';
+import { authLoginBodySchema } from '@src/schemas/auth.schema.js';
 
 export async function registerValidationPlugin(fastify: FastifyInstance) {
-  fastify.addSchema(createUserBodySchema);
-  fastify.addSchema(userIdParamsSchema);
+  fastify.addSchema(authLoginBodySchema);
 }

@@ -19,8 +19,8 @@ afterAll(async () => {
   await app.close();
 });
 
-test('GET /health returns status and metadata', async () => {
-  const res = await app.inject({ method: 'GET', url: '/health' });
+test('GET /api/v1/health returns status and metadata', async () => {
+  const res = await app.inject({ method: 'GET', url: '/api/v1/health' });
   expect(res.statusCode).toBe(200);
 
   const body = res.json();

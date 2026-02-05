@@ -24,6 +24,9 @@ Variables principales:
 - `MSSQL_SA_PASSWORD`: password del usuario `sa` para SQL Server
 - `MSSQL_DB_NAME`: nombre de la base de datos
 - `DATABASE_URL`: conexión para Prisma (SQL Server, formato `sqlserver://host:port;database=...;user=...;password=...`)
+- `JWT_SECRET`: secreto para firmar JWT propios
+- `JWT_EXPIRES_IN`: expiración en segundos para JWT propios
+- `AUTH_EXTERNAL_MODE`: modo de validación externa (`mock_allow` o `mock_deny`)
 
 ## Levantar SQL Server (Docker Compose)
 
