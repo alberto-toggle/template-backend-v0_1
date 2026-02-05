@@ -27,6 +27,12 @@ Variables principales:
 - `JWT_SECRET`: secreto para firmar JWT propios
 - `JWT_EXPIRES_IN`: expiración en segundos para JWT propios
 - `AUTH_EXTERNAL_MODE`: modo de validación externa (`mock_allow` o `mock_deny`)
+- `JWT_ISSUER`: issuer del JWT (opcional)
+- `JWT_AUDIENCE`: audience del JWT (opcional)
+- `JWT_ALGORITHM`: algoritmo de firma del JWT (ej. HS256)
+- `JWT_CLOCK_SKEW_SECONDS`: tolerancia de reloj en segundos
+- `JWT_PRIVATE_KEY`: llave privada para algoritmos asimétricos
+- `JWT_PUBLIC_KEY`: llave pública para algoritmos asimétricos
 
 ## Levantar SQL Server (Docker Compose)
 

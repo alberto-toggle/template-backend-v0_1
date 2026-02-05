@@ -1,10 +1,11 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
-import { env } from '@src/config/env.js';
 import { ErrorCodes } from '@src/constants/error-codes.js';
 import { buildError } from '@src/utils/response-builder.js';
+import { assertJwtConfig, getJwtVerifyKey, getJwtVerifyOptions } from '@src/services/auth/jwt.utils.js';
 
 export async function registerAuthPlugin(fastify: FastifyInstance) {
+  assertJwtConfig();
   fastify.decorateRequest('auth', null);
 
   fastify.decorate(
@@ -37,7 +38,7 @@ export async function registerAuthPlugin(fastify: FastifyInstance) {
       }
 
       try {
-        const payload = jwt.verify(token, env.JWT_SECRET);
+        const payload = jwt.verify(token, getJwtVerifyKey(), getJwtVerifyOptions());
         request.auth = payload as Record<string, unknown>;
       } catch {
         const status = 401;

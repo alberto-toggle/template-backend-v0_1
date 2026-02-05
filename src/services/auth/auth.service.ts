@@ -1,23 +1,15 @@
 import jwt from 'jsonwebtoken';
-import { env } from '@src/config/env.js';
+import { getAuthProvider } from '@src/services/auth/auth-provider.factory.js';
+import { assertJwtConfig, getJwtSignKey, getJwtSignOptions } from '@src/services/auth/jwt.utils.js';
 
-export type ExternalAuthResult = {
-  ok: boolean;
-  reason?: 'INVALID_CREDENTIALS';
-};
+assertJwtConfig();
 
-export async function validateExternalCredentials(
-  _email: string,
-  _password: string
-): Promise<ExternalAuthResult> {
-  // Stub/mock controlled by env until Cognito/ADFS is integrated.
-  switch (env.AUTH_EXTERNAL_MODE) {
-    case 'mock_deny':
-      return { ok: false, reason: 'INVALID_CREDENTIALS' };
-    case 'mock_allow':
-    default:
-      return { ok: true };
-  }
+export async function authenticateWithProvider(params: {
+  email: string;
+  password: string;
+}) {
+  const provider = getAuthProvider();
+  return provider.authenticate(params);
 }
 
 export function generateAccessToken(payload: {
@@ -27,7 +19,7 @@ export function generateAccessToken(payload: {
   modules: string[];
   ad_object_id?: string | null;
 }) {
-  const expiresIn = env.JWT_EXPIRES_IN;
-  const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn });
-  return { token, expiresIn };
+  const options = getJwtSignOptions();
+  const token = jwt.sign(payload, getJwtSignKey(), options);
+  return { token, expiresIn: typeof options.expiresIn === 'number' ? options.expiresIn : 0 };
 }

@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { AuthLoginDto } from '@src/dto/auth/login.dto.js';
-import { generateAccessToken, validateExternalCredentials } from '@src/services/auth/auth.service.js';
+import { authenticateWithProvider, generateAccessToken } from '@src/services/auth/auth.service.js';
 import { getUserByEmail, getUserById } from '@src/services/users/user.service.js';
 import { listModulePermissionsByUserId } from '@src/services/module-permissions/module-permission.service.js';
 import { ErrorCodes } from '@src/constants/error-codes.js';
@@ -18,7 +18,7 @@ export async function loginHandler(
 ) {
   const { email, password } = request.body;
 
-  const externalAuth = await validateExternalCredentials(email, password);
+  const externalAuth = await authenticateWithProvider({ email, password });
   if (!externalAuth.ok) {
     const status = 401;
     reply.status(status).send(
@@ -31,7 +31,8 @@ export async function loginHandler(
     return;
   }
 
-  const user = await getUserByEmail(email);
+  const normalizedEmail = externalAuth.email ?? email.trim().toLowerCase();
+  const user = await getUserByEmail(normalizedEmail);
   if (!user) {
     const status = 403;
     reply.status(status).send(
