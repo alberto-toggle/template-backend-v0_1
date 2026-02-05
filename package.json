@@ -4,10 +4,10 @@
   "description": "Microservice boilerplate with Node.js, Fastify, TypeScript, Prisma, and SQL Server",
   "private": true,
   "type": "module",
-  "packageManager": "npm@10.7.0",
+  "packageManager": "npm@11.9.0",
   "engines": {
     "node": "22.22.0",
-    "npm": "10.x"
+    "npm": "11.9.0"
   },
   "scripts": {
     "dev": "node --env-file=.env --import tsx --watch src/index.ts",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@fastify/swagger": "9.6.1",
     "@fastify/swagger-ui": "5.2.5",
-    "@prisma/client": "6.19.0",
+    "@prisma/client": "6.19.2",
     "ajv": "8.17.1",
     "fastify": "5.7.4",
     "pino": "10.3.0",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/jest": "30.0.0",
-    "@types/node": "25.2.0",
+    "@types/node": "25.2.1",
     "@typescript-eslint/eslint-plugin": "8.54.0",
     "@typescript-eslint/parser": "8.54.0",
     "eslint": "9.39.2",
@@ -42,7 +42,7 @@
     "jest": "30.2.0",
     "pino-pretty": "^13.0.0",
     "prettier": "3.8.1",
-    "prisma": "6.19.0",
+    "prisma": "6.19.2",
     "ts-jest": "29.4.6",
     "tsc-alias": "1.8.16",
     "tsx": "4.21.0",

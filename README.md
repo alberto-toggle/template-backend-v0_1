@@ -5,7 +5,10 @@ Arquetipo para microservicios con Node.js 22, Fastify, TypeScript, Prisma y SQL 
 ## Requisitos
 
 - Node.js 22.22.0 LTS
-- npm 10.x (incluido con Node 22.22.0)
+- npm 11.9.0
+```bash
+npm install -g npm@11.9.0 
+```
 - Docker + Docker Compose (para SQL Server local)
 
 ## Variables de entorno
