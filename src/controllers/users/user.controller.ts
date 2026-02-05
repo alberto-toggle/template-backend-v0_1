@@ -11,7 +11,7 @@ export async function createUserHandler(
 }
 
 export async function getUserByIdHandler(
-  request: FastifyRequest<{ Params: { id: number } }>,
+  request: FastifyRequest<{ Params: { id: string } }>,
   reply: FastifyReply
 ) {
   const user = await getUserById(request.params.id);

@@ -29,14 +29,14 @@ test('POST /users and GET /users/:id', async () => {
   const createRes = await app.inject({
     method: 'POST',
     url: '/users',
-    payload: { email: 'jane@example.com', name: 'Jane' }
+    payload: { email: 'jane@example.com', status: 'ACTIVE' }
   });
 
   expect(createRes.statusCode).toBe(201);
   const created = createRes.json();
   expect(created.email).toBe('jane@example.com');
-  expect(created.name).toBe('Jane');
-  expect(typeof created.id).toBe('number');
+  expect(created.status).toBe('ACTIVE');
+  expect(typeof created.id).toBe('string');
 
   const getRes = await app.inject({
     method: 'GET',
@@ -47,4 +47,5 @@ test('POST /users and GET /users/:id', async () => {
   const fetched = getRes.json();
   expect(fetched.id).toBe(created.id);
   expect(fetched.email).toBe('jane@example.com');
+  expect(fetched.status).toBe('ACTIVE');
 });

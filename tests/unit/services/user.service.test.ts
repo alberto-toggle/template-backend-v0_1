@@ -21,10 +21,10 @@ afterAll(async () => {
 test('createUser creates and getUserById retrieves user', async () => {
   const created = await userService.createUser({
     email: 'unit@example.com',
-    name: 'Unit Test'
+    status: 'ACTIVE'
   });
 
   const fetched = await userService.getUserById(created.id);
   expect(fetched?.email).toBe('unit@example.com');
-  expect(fetched?.name).toBe('Unit Test');
+  expect(fetched?.status).toBe('ACTIVE');
 });

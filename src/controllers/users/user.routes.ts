@@ -11,10 +11,12 @@ export async function registerUserRoutes(fastify: FastifyInstance) {
           201: {
             type: 'object',
             properties: {
-              id: { type: 'integer' },
+              id: { type: 'string' },
               email: { type: 'string' },
-              name: { type: 'string' },
-              createdAt: { type: 'string' }
+              adObjectId: { type: ['string', 'null'] },
+              status: { type: 'string' },
+              createdAt: { type: 'string' },
+              updatedAt: { type: 'string' }
             }
           }
         }
@@ -32,10 +34,12 @@ export async function registerUserRoutes(fastify: FastifyInstance) {
           200: {
             type: 'object',
             properties: {
-              id: { type: 'integer' },
+              id: { type: 'string' },
               email: { type: 'string' },
-              name: { type: 'string' },
-              createdAt: { type: 'string' }
+              adObjectId: { type: ['string', 'null'] },
+              status: { type: 'string' },
+              createdAt: { type: 'string' },
+              updatedAt: { type: 'string' }
             }
           },
           404: {

@@ -3,9 +3,10 @@ export const createUserBodySchema = {
   type: 'object',
   properties: {
     email: { type: 'string', format: 'email' },
-    name: { type: 'string', minLength: 1 }
+    adObjectId: { type: ['string', 'null'] },
+    status: { type: 'string', enum: ['ACTIVE', 'INACTIVE', 'SUSPENDED'] }
   },
-  required: ['email', 'name'],
+  required: ['email'],
   additionalProperties: false
 } as const;
 
@@ -13,7 +14,7 @@ export const userIdParamsSchema = {
   $id: 'UserIdParams',
   type: 'object',
   properties: {
-    id: { type: 'integer', minimum: 1 }
+    id: { type: 'string', format: 'uuid' }
   },
   required: ['id'],
   additionalProperties: false

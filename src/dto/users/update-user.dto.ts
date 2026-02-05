@@ -1,4 +1,5 @@
 export interface UpdateUserDto {
   email?: string;
-  name?: string;
+  adObjectId?: string | null;
+  status?: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
 }
