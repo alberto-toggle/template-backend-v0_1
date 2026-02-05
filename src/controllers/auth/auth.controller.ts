@@ -89,3 +89,37 @@ export async function meHandler(request: FastifyRequest, reply: FastifyReply) {
     modules
   });
 }
+
+export async function permissionsHandler(request: FastifyRequest, reply: FastifyReply) {
+  const claims = request.auth ?? {};
+  const userId = typeof claims.user_id === 'string' ? claims.user_id : null;
+  const email = typeof claims.email === 'string' ? claims.email : null;
+
+  if (!userId && !email) {
+    reply.code(401).send({ ...ERROR_UNAUTHORIZED, message: 'unauthorized' });
+    return;
+  }
+
+  const user = userId ? await getUserById(userId) : await getUserByEmail(email as string);
+  if (!user) {
+    reply.code(403).send({ ...ERROR_USER_NOT_REGISTERED, message: 'usuario no registrado en BackOffice' });
+    return;
+  }
+
+  if (user.status !== 'ACTIVE') {
+    reply.code(403).send({ ...ERROR_USER_NOT_ACTIVE, message: 'usuario no activo' });
+    return;
+  }
+
+  const permissions = await listModulePermissionsByUserId(user.id);
+  const modules = permissions.map((p) => p.moduleCode);
+  if (modules.length === 0) {
+    reply.code(403).send({ ...ERROR_NO_PERMISSIONS, message: 'sin permisos para acceder' });
+    return;
+  }
+
+  reply.send({
+    user_id: user.id,
+    modules
+  });
+}
