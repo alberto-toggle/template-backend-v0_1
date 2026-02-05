@@ -197,7 +197,7 @@ export async function permissionsHandler(request: FastifyRequest, reply: Fastify
     buildSuccess({
       status: 200,
       data: {
-        user_id: user.id,
+        user_id: access.user.id,
         modules
       }
     })

@@ -39,7 +39,7 @@ export async function registerAuthPlugin(fastify: FastifyInstance) {
 
       try {
         const payload = jwt.verify(token, getJwtVerifyKey(), getJwtVerifyOptions());
-        request.auth = payload as Record<string, unknown>;
+        request.auth = payload as unknown as Record<string, unknown>;
       } catch {
         const status = 401;
         reply.status(status).send(

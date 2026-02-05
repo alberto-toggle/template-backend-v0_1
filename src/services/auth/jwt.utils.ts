@@ -1,4 +1,4 @@
-import type { Algorithm, JwtSignOptions, JwtVerifyOptions } from 'jsonwebtoken';
+import type { Algorithm, SignOptions, VerifyOptions } from 'jsonwebtoken';
 import { env } from '@src/config/env.js';
 
 const SYMMETRIC_ALGS = new Set<Algorithm>(['HS256', 'HS384', 'HS512']);
@@ -52,10 +52,10 @@ export function getJwtVerifyKey(): string {
   return env.JWT_PUBLIC_KEY;
 }
 
-export function getJwtSignOptions(): JwtSignOptions {
+export function getJwtSignOptions(): SignOptions {
   const issuer = getJwtIssuer();
   const audience = getJwtAudience();
-  const options: JwtSignOptions = {
+  const options: SignOptions = {
     algorithm: getJwtAlgorithm(),
     expiresIn: env.JWT_EXPIRES_IN
   };
@@ -66,10 +66,10 @@ export function getJwtSignOptions(): JwtSignOptions {
   return options;
 }
 
-export function getJwtVerifyOptions(): JwtVerifyOptions {
+export function getJwtVerifyOptions(): VerifyOptions {
   const issuer = getJwtIssuer();
   const audience = getJwtAudience();
-  const options: JwtVerifyOptions = {
+  const options: VerifyOptions = {
     algorithms: [getJwtAlgorithm()],
     clockTolerance: env.JWT_CLOCK_SKEW_SECONDS
   };

@@ -26,12 +26,12 @@ const schema: JSONSchemaType<EnvConfig> = {
     JWT_SECRET: { type: 'string' },
     JWT_EXPIRES_IN: { type: 'integer', minimum: 60 },
     AUTH_EXTERNAL_MODE: { type: 'string', minLength: 1 },
-    JWT_ISSUER: { type: 'string' },
-    JWT_AUDIENCE: { type: 'string' },
+    JWT_ISSUER: { type: 'string', nullable: true },
+    JWT_AUDIENCE: { type: 'string', nullable: true },
     JWT_ALGORITHM: { type: 'string', minLength: 1 },
     JWT_CLOCK_SKEW_SECONDS: { type: 'integer', minimum: 0 },
-    JWT_PRIVATE_KEY: { type: 'string' },
-    JWT_PUBLIC_KEY: { type: 'string' }
+    JWT_PRIVATE_KEY: { type: 'string', nullable: true },
+    JWT_PUBLIC_KEY: { type: 'string', nullable: true }
   },
   required: [
     'SERVICE_NAME',
