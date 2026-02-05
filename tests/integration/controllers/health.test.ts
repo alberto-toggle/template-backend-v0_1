@@ -24,8 +24,10 @@ test('GET /api/v1/health returns status and metadata', async () => {
   expect(res.statusCode).toBe(200);
 
   const body = res.json();
-  expect(body.status).toBe('ok');
-  expect(body.service).toBe('microservice-name');
-  expect(typeof body.uptimeSec).toBe('number');
-  expect(typeof body.timestamp).toBe('string');
+  expect(body.success).toBe(true);
+  expect(body.http_status).toBe(200);
+  expect(body.data.status).toBe('ok');
+  expect(body.data.service).toBe('microservice-name');
+  expect(typeof body.data.uptimeSec).toBe('number');
+  expect(typeof body.data.timestamp).toBe('string');
 });

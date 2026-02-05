@@ -1,6 +1,8 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
 import { env } from '@src/config/env.js';
+import { ErrorCodes } from '@src/constants/error-codes.js';
+import { buildError } from '@src/utils/response-builder.js';
 
 export async function registerAuthPlugin(fastify: FastifyInstance) {
   fastify.decorateRequest('auth', null);
@@ -10,13 +12,27 @@ export async function registerAuthPlugin(fastify: FastifyInstance) {
     async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const header = request.headers.authorization;
       if (!header || !header.startsWith('Bearer ')) {
-        reply.code(401).send({ error_code: 'UNAUTHORIZED', message: 'missing bearer token' });
+        const status = 401;
+        reply.status(status).send(
+          buildError({
+            status,
+            message: 'missing bearer token',
+            errorCode: ErrorCodes.UNAUTHORIZED
+          })
+        );
         return;
       }
 
       const token = header.slice('Bearer '.length).trim();
       if (!token) {
-        reply.code(401).send({ error_code: 'UNAUTHORIZED', message: 'missing bearer token' });
+        const status = 401;
+        reply.status(status).send(
+          buildError({
+            status,
+            message: 'missing bearer token',
+            errorCode: ErrorCodes.UNAUTHORIZED
+          })
+        );
         return;
       }
 
@@ -24,7 +40,14 @@ export async function registerAuthPlugin(fastify: FastifyInstance) {
         const payload = jwt.verify(token, env.JWT_SECRET);
         request.auth = payload as Record<string, unknown>;
       } catch {
-        reply.code(401).send({ error_code: 'INVALID_TOKEN', message: 'invalid or expired token' });
+        const status = 401;
+        reply.status(status).send(
+          buildError({
+            status,
+            message: 'invalid or expired token',
+            errorCode: ErrorCodes.INVALID_TOKEN
+          })
+        );
         return;
       }
     }

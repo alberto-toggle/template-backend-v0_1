@@ -3,12 +3,14 @@ import type { AuthLoginDto } from '@src/dto/auth/login.dto.js';
 import { generateAccessToken, validateExternalCredentials } from '@src/services/auth/auth.service.js';
 import { getUserByEmail, getUserById } from '@src/services/users/user.service.js';
 import { listModulePermissionsByUserId } from '@src/services/module-permissions/module-permission.service.js';
+import { ErrorCodes } from '@src/constants/error-codes.js';
+import { buildError, buildSuccess } from '@src/utils/response-builder.js';
 
-const ERROR_INVALID_CREDENTIALS = { error_code: 'INVALID_CREDENTIALS' };
-const ERROR_USER_NOT_REGISTERED = { error_code: 'USER_NOT_REGISTERED' };
-const ERROR_USER_NOT_ACTIVE = { error_code: 'USER_NOT_ACTIVE' };
-const ERROR_NO_PERMISSIONS = { error_code: 'NO_PERMISSIONS' };
-const ERROR_UNAUTHORIZED = { error_code: 'UNAUTHORIZED' };
+const ERROR_INVALID_CREDENTIALS = { error_code: ErrorCodes.INVALID_CREDENTIALS };
+const ERROR_USER_NOT_REGISTERED = { error_code: ErrorCodes.USER_NOT_REGISTERED };
+const ERROR_USER_NOT_ACTIVE = { error_code: ErrorCodes.USER_NOT_ACTIVE };
+const ERROR_NO_PERMISSIONS = { error_code: ErrorCodes.NO_PERMISSIONS };
+const ERROR_UNAUTHORIZED = { error_code: ErrorCodes.UNAUTHORIZED };
 
 export async function loginHandler(
   request: FastifyRequest<{ Body: AuthLoginDto }>,
@@ -18,27 +20,53 @@ export async function loginHandler(
 
   const externalAuth = await validateExternalCredentials(email, password);
   if (!externalAuth.ok) {
-    reply.code(401).send({ ...ERROR_INVALID_CREDENTIALS, message: 'credenciales inválidas' });
+    const status = 401;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'credenciales inválidas',
+        errorCode: ERROR_INVALID_CREDENTIALS.error_code
+      })
+    );
     return;
   }
 
   const user = await getUserByEmail(email);
   if (!user) {
-    reply
-      .code(404)
-      .send({ ...ERROR_USER_NOT_REGISTERED, message: 'usuario no registrado en BackOffice' });
+    const status = 403;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'usuario no registrado en BackOffice',
+        errorCode: ERROR_USER_NOT_REGISTERED.error_code
+      })
+    );
     return;
   }
 
   if (user.status !== 'ACTIVE') {
-    reply.code(403).send({ ...ERROR_USER_NOT_ACTIVE, message: 'usuario no activo' });
+    const status = 403;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'usuario no activo',
+        errorCode: ERROR_USER_NOT_ACTIVE.error_code
+      })
+    );
     return;
   }
 
   const permissions = await listModulePermissionsByUserId(user.id);
   const modules = permissions.map((p) => p.moduleCode);
   if (modules.length === 0) {
-    reply.code(403).send({ ...ERROR_NO_PERMISSIONS, message: 'sin permisos para acceder' });
+    const status = 403;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'sin permisos para acceder',
+        errorCode: ERROR_NO_PERMISSIONS.error_code
+      })
+    );
     return;
   }
 
@@ -50,11 +78,16 @@ export async function loginHandler(
     ad_object_id: user.adObjectId ?? null
   });
 
-  reply.send({
-    access_token: token,
-    expires_in: expiresIn,
-    modules
-  });
+  reply.status(200).send(
+    buildSuccess({
+      status: 200,
+      data: {
+        access_token: token,
+        expires_in: expiresIn,
+        modules
+      }
+    })
+  );
 }
 
 export async function meHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -63,31 +96,57 @@ export async function meHandler(request: FastifyRequest, reply: FastifyReply) {
   const email = typeof claims.email === 'string' ? claims.email : null;
 
   if (!userId && !email) {
-    reply.code(401).send({ ...ERROR_UNAUTHORIZED, message: 'unauthorized' });
+    const status = 401;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'unauthorized',
+        errorCode: ERROR_UNAUTHORIZED.error_code
+      })
+    );
     return;
   }
 
   const user = userId ? await getUserById(userId) : await getUserByEmail(email as string);
   if (!user) {
-    reply.code(401).send({ ...ERROR_UNAUTHORIZED, message: 'unauthorized' });
+    const status = 401;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'unauthorized',
+        errorCode: ERROR_UNAUTHORIZED.error_code
+      })
+    );
     return;
   }
 
   if (user.status !== 'ACTIVE') {
-    reply.code(403).send({ ...ERROR_USER_NOT_ACTIVE, message: 'usuario no activo' });
+    const status = 403;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'usuario no activo',
+        errorCode: ERROR_USER_NOT_ACTIVE.error_code
+      })
+    );
     return;
   }
 
   const permissions = await listModulePermissionsByUserId(user.id);
   const modules = permissions.map((p) => p.moduleCode);
 
-  reply.send({
-    user_id: user.id,
-    email: user.email,
-    status: user.status,
-    ad_object_id: user.adObjectId ?? null,
-    modules
-  });
+  reply.status(200).send(
+    buildSuccess({
+      status: 200,
+      data: {
+        user_id: user.id,
+        email: user.email,
+        status: user.status,
+        ad_object_id: user.adObjectId ?? null,
+        modules
+      }
+    })
+  );
 }
 
 export async function permissionsHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -96,30 +155,63 @@ export async function permissionsHandler(request: FastifyRequest, reply: Fastify
   const email = typeof claims.email === 'string' ? claims.email : null;
 
   if (!userId && !email) {
-    reply.code(401).send({ ...ERROR_UNAUTHORIZED, message: 'unauthorized' });
+    const status = 401;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'unauthorized',
+        errorCode: ERROR_UNAUTHORIZED.error_code
+      })
+    );
     return;
   }
 
   const user = userId ? await getUserById(userId) : await getUserByEmail(email as string);
   if (!user) {
-    reply.code(403).send({ ...ERROR_USER_NOT_REGISTERED, message: 'usuario no registrado en BackOffice' });
+    const status = 403;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'usuario no registrado en BackOffice',
+        errorCode: ERROR_USER_NOT_REGISTERED.error_code
+      })
+    );
     return;
   }
 
   if (user.status !== 'ACTIVE') {
-    reply.code(403).send({ ...ERROR_USER_NOT_ACTIVE, message: 'usuario no activo' });
+    const status = 403;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'usuario no activo',
+        errorCode: ERROR_USER_NOT_ACTIVE.error_code
+      })
+    );
     return;
   }
 
   const permissions = await listModulePermissionsByUserId(user.id);
   const modules = permissions.map((p) => p.moduleCode);
   if (modules.length === 0) {
-    reply.code(403).send({ ...ERROR_NO_PERMISSIONS, message: 'sin permisos para acceder' });
+    const status = 403;
+    reply.status(status).send(
+      buildError({
+        status,
+        message: 'sin permisos para acceder',
+        errorCode: ERROR_NO_PERMISSIONS.error_code
+      })
+    );
     return;
   }
 
-  reply.send({
-    user_id: user.id,
-    modules
-  });
+  reply.status(200).send(
+    buildSuccess({
+      status: 200,
+      data: {
+        user_id: user.id,
+        modules
+      }
+    })
+  );
 }

@@ -44,19 +44,6 @@ docker compose up -d prisma-studio
 
 Abre `http://localhost:5555`.
 
-### Usar SQL Server remoto (opcional)
-
-Puedes usar una base de datos remota y omitir el contenedor local.
-
-1) Configura `DATABASE_URL` apuntando al host remoto en tu `.env` o `.env.local`.
-2) Asegura credenciales y permisos en el servidor remoto (usuario, password y red/VPN).
-3) No levantes el contenedor `sqlserver`.
-4) Levanta solo la app:
-
-```bash
-npm run dev
-```
-
 ### Persistencia local de datos (opcional)
 
 Este proyecto usa un volumen Docker llamado `sqlserver_data`. El comando de limpieza elimina contenedores y borra el volumen, por lo que se pierden los datos locales. Úsalo solo cuando quieras un entorno limpio desde cero:
@@ -85,7 +72,18 @@ npm run prisma:seed
 npm run dev
 ```
 
-Swagger/OpenAPI: `http://localhost:3000/docs`
+### Usar SQL Server remoto (opcional)
+
+Puedes usar una base de datos remota y omitir el contenedor local.
+
+1) Configura `DATABASE_URL` apuntando al host remoto en tu `.env` o `.env.local`.
+2) Asegura credenciales y permisos en el servidor remoto (usuario, password y red/VPN).
+3) No levantes el contenedor `sqlserver`.
+4) Levanta solo la app:
+
+```bash
+npm run dev
+```
 
 ## Build y run
 
@@ -118,3 +116,35 @@ Luego registra las rutas en `src/app.ts` y agrega los esquemas en `src/plugins/v
 ## Estructura del proyecto
 
 El layout sigue la especificación del Tech Stack v1.1.0 (New Developments + Project Structure). Las carpetas placeholder incluyen `.gitkeep`.
+
+Swagger/OpenAPI: `http://localhost:3000/docs`
+
+## Estándar de respuestas
+
+Todas las respuestas usan un formato único para éxito y error.
+
+Éxito:
+
+```json
+{
+  "success": true,
+  "http_status": 200,
+  "message": "opcional",
+  "data": {},
+  "meta": {},
+  "pagination": {}
+}
+```
+
+Error:
+
+```json
+{
+  "success": false,
+  "http_status": 401,
+  "message": "detalle del error",
+  "error_code": "INVALID_TOKEN",
+  "details": {},
+  "meta": {}
+}
+```
