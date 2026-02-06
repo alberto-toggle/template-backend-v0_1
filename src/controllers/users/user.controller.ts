@@ -1,6 +1,9 @@
+import { randomUUID } from 'node:crypto';
+
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { CreateUserDto } from '@src/dto/users/create-user.dto.js';
 import { createUser, getUserById } from '@src/services/users/user.service.js';
+import { buildApiError } from '@src/types/api-error.js';
 
 export async function createUserHandler(
   request: FastifyRequest<{ Body: CreateUserDto }>,
@@ -17,7 +20,14 @@ export async function getUserByIdHandler(
   const user = await getUserById(request.params.id);
 
   if (!user) {
-    reply.code(404).send({ message: 'User not found' });
+    const correlationId = (request.headers['x-correlation-id'] as string) || randomUUID();
+    reply.code(404).send(
+      buildApiError({
+        code: 'NOT_FOUND',
+        message: 'User not found',
+        correlationId
+      })
+    );
     return;
   }
 

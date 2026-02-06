@@ -2,6 +2,7 @@ import { Ajv, type JSONSchemaType } from 'ajv';
 
 export interface EnvConfig {
   SERVICE_NAME: string;
+  SERVICE_VERSION: string;
   PORT: number;
   LOG_LEVEL: string;
   DATABASE_URL: string;
@@ -11,6 +12,7 @@ const schema: JSONSchemaType<EnvConfig> = {
   type: 'object',
   properties: {
     SERVICE_NAME: { type: 'string', minLength: 1 },
+    SERVICE_VERSION: { type: 'string', minLength: 1 },
     PORT: { type: 'integer', minimum: 1, maximum: 65535 },
     LOG_LEVEL: { type: 'string', minLength: 1 },
     DATABASE_URL: { type: 'string', minLength: 1 }
@@ -24,6 +26,7 @@ const validate = ajv.compile(schema);
 
 const envData = {
   SERVICE_NAME: process.env.SERVICE_NAME ?? 'microservice-name',
+  SERVICE_VERSION: process.env.SERVICE_VERSION ?? process.env.npm_package_version ?? '0.1.0',
   PORT: Number(process.env.PORT ?? 3000),
   LOG_LEVEL: process.env.LOG_LEVEL ?? 'info',
   DATABASE_URL: process.env.DATABASE_URL ?? ''
