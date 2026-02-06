@@ -1,6 +1,8 @@
-const databaseUrl =
-  process.env.DATABASE_URL ??
-  'sqlserver://sa:YourStrong!Passw0rd@localhost:1433;database=microservice_db;encrypt=true;trustServerCertificate=true';
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error('DATABASE_URL environment variable is required for tests');
+}
 
 process.env.DATABASE_URL = databaseUrl;
 process.env.SERVICE_NAME = process.env.SERVICE_NAME ?? 'microservice-name';

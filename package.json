@@ -15,9 +15,9 @@
     "start": "node dist/index.js",
     "lint": "eslint . --config eslint.config.js --ext .ts",
     "format": "prettier --config .prettierrc.cjs --write .",
-    "test": "jest --config jest.config.ts",
-    "test:watch": "jest --watch --config jest.config.ts",
-    "test:coverage": "jest --coverage --config jest.config.ts",
+    "test": "node --env-file=.env node_modules/jest/bin/jest.js --config jest.config.ts",
+    "test:watch": "node --env-file=.env node_modules/jest/bin/jest.js --watch --config jest.config.ts",
+    "test:coverage": "node --env-file=.env node_modules/jest/bin/jest.js --coverage --config jest.config.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:seed": "prisma db seed"
