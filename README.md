@@ -15,10 +15,10 @@ npm install -g npm@11.9.0
 
 ## Variables de entorno
 
-Copia `.env.example` a `.env` y ajusta lo necesario:
+Copia `templates/.env.example` a `.env` y ajusta lo necesario:
 
 ```bash
-cp .env.example .env
+cp templates/.env.example .env
 ```
 
 Variables principales:
