@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "rootDir": ".",
+    "noEmit": true,
+    "paths": {
+      "@src/*.js": ["src/*.ts"],
+      "@src/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "exclude": ["node_modules", "dist", "prisma"]
+}

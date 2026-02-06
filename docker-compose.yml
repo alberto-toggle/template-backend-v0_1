@@ -3,6 +3,8 @@ services:
     container_name: backoffice-sqlserver
     image: mcr.microsoft.com/mssql/server:2022-latest
     platform: linux/amd64
+    env_file:
+      - .env
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
@@ -31,13 +33,11 @@ services:
     volumes:
       - .:/app
     command: >
-      sh -c "
-      apt-get update -y &&
-      apt-get install -y openssl &&
-      npx prisma studio
-      "
+      sh -c " apt-get update -y && apt-get install -y openssl && npx prisma studio "
     ports:
       - '5555:5555'
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=sqlserver://sqlserver:1433;database=${MSSQL_DB_NAME};user=sa;password=${MSSQL_SA_PASSWORD};encrypt=false;trustServerCertificate=true
     depends_on:

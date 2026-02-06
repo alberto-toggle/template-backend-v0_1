@@ -1,10 +1,10 @@
 const databaseUrl =
   process.env.DATABASE_URL ??
-  'sqlserver://sa:YourStrong!Passw0rd@localhost:1433;database=microservice_db;encrypt=true;trustServerCertificate=true';
+  'sqlserver://localhost:1433;database=microservice_db;user=sa;password=YourStrongPassw0rd;encrypt=true;trustServerCertificate=true';
 
 process.env.DATABASE_URL = databaseUrl;
 
-let prisma: typeof import('@prisma/client').PrismaClient;
+let prisma: import('@prisma/client').PrismaClient;
 let userService: typeof import('@src/services/users/user.service.js');
 
 beforeAll(async () => {

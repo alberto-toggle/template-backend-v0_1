@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 
 export default [
   {
-    ignores: ['dist/', 'node_modules/', 'prisma/', 'configuration/', 'scripts/', 'environment/']
+    ignores: ['dist/', 'node_modules/', 'prisma/', 'scripts/']
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -23,7 +23,7 @@ export default [
       parser: tseslint.parser,
       parserOptions: {
         project: 'tsconfig.json',
-        tsconfigRootDir: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'),
+        tsconfigRootDir: path.resolve(path.dirname(fileURLToPath(import.meta.url))),
         sourceType: 'module'
       }
     },

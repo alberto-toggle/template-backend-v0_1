@@ -15,10 +15,10 @@ npm install -g npm@11.9.0
 
 ## Variables de entorno
 
-Copia `templates/.env.example` a `.env` y ajusta lo necesario:
+Copia `.env.example` a `.env` y ajusta lo necesario:
 
 ```bash
-cp templates/.env.example .env
+cp .env.example .env
 ```
 
 Variables principales:
@@ -33,7 +33,7 @@ Variables principales:
 ## Levantar SQL Server (Docker Compose)
 
 ```bash
-docker compose -f environment/docker-compose.yml up -d sqlserver
+docker compose up -d sqlserver
 ```
 
 ### Prisma Studio (opcional)
@@ -41,7 +41,7 @@ docker compose -f environment/docker-compose.yml up -d sqlserver
 Prisma Studio es una UI para inspeccionar y editar datos.
 
 ```bash
-docker compose -f environment/docker-compose.yml up -d prisma-studio
+docker compose up -d prisma-studio
 ```
 
 Abre `http://localhost:5555`.
@@ -64,7 +64,7 @@ npm run dev
 Este proyecto usa un volumen Docker llamado `sqlserver_data`. El comando de limpieza elimina contenedores y borra el volumen, por lo que se pierden los datos locales. Úsalo solo cuando quieras un entorno limpio desde cero:
 
 ```bash
-docker compose -f environment/docker-compose.yml down -v
+docker compose down -v
 ```
 
 ## Instalación

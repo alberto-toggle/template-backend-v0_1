@@ -2,7 +2,7 @@ FROM node:22.22.0-bookworm-slim AS base
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install -g npm@11.9.0 && npm install
-COPY configuration ./configuration
+COPY tsconfig.json ./
 COPY src ./src
 COPY prisma ./prisma
 RUN npm run build

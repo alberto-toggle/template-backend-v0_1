@@ -1,6 +1,6 @@
 const databaseUrl =
   process.env.DATABASE_URL ??
-  'sqlserver://sa:YourStrong!Passw0rd@localhost:1433;database=microservice_db;encrypt=true;trustServerCertificate=true';
+  'sqlserver://localhost:1433;database=microservice_db;user=sa;password=YourStrongPassw0rd;encrypt=true;trustServerCertificate=true';
 
 process.env.DATABASE_URL = databaseUrl;
 process.env.SERVICE_NAME = process.env.SERVICE_NAME ?? 'microservice-name';

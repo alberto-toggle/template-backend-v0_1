@@ -1,20 +1,20 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  preset: 'ts-jest/presets/default-esm',
-  rootDir: '..',
+  preset: 'ts-jest',
+  rootDir: '.',
   testEnvironment: 'node',
-  extensionsToTreatAsEsm: ['.ts'],
   transform: {
     '^.+\\.ts$': [
       'ts-jest',
       {
-        useESM: true,
-        tsconfig: 'configuration/tsconfig.json'
+        tsconfig: 'tsconfig.jest.json'
       }
     ]
   },
+  transformIgnorePatterns: ['/node_modules/(?!(@prisma)/)'],
   moduleNameMapper: {
+    '^@src/(.*)\\.js$': '<rootDir>/src/$1.ts',
     '^@src/(.*)$': '<rootDir>/src/$1',
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },

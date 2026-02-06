@@ -10,14 +10,14 @@
     "npm": "11.9.0"
   },
   "scripts": {
-    "dev": "tsx --env-file=.env --watch --tsconfig configuration/tsconfig.json src/index.ts",
-    "build": "tsc -p configuration/tsconfig.json && tsc-alias -p configuration/tsconfig.json",
+    "dev": "tsx --env-file=.env --watch --tsconfig tsconfig.json src/index.ts",
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "start": "node dist/index.js",
-    "lint": "eslint . --config configuration/eslint.config.js --ext .ts",
-    "format": "prettier --config configuration/.prettierrc.cjs --write .",
-    "test": "jest --config configuration/jest.config.ts",
-    "test:watch": "jest --watch --config configuration/jest.config.ts",
-    "test:coverage": "jest --coverage --config configuration/jest.config.ts",
+    "lint": "eslint . --config eslint.config.js --ext .ts",
+    "format": "prettier --config .prettierrc.cjs --write .",
+    "test": "jest --config jest.config.ts",
+    "test:watch": "jest --watch --config jest.config.ts",
+    "test:coverage": "jest --coverage --config jest.config.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:seed": "prisma db seed"
