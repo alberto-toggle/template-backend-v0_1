@@ -3,6 +3,7 @@
     "target": "ES2023",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "isolatedModules": true,
     "baseUrl": "..",
     "paths": {
       "@src/*": ["src/*"]

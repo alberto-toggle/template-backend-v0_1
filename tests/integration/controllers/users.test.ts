@@ -8,7 +8,7 @@ process.env.PORT = process.env.PORT ?? '3000';
 process.env.LOG_LEVEL = process.env.LOG_LEVEL ?? 'info';
 
 let app: Awaited<ReturnType<typeof import('@src/app.js').buildApp>>;
-let prisma: typeof import('@prisma/client').PrismaClient;
+let prisma: import('@prisma/client').PrismaClient;
 
 beforeAll(async () => {
   const prismaMod = await import('@prisma/client');
