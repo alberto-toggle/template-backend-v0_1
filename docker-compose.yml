@@ -39,7 +39,7 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=sqlserver://sqlserver:1433;database=${MSSQL_DB_NAME};user=sa;password=${MSSQL_SA_PASSWORD};encrypt=false;trustServerCertificate=true
+      - DATABASE_URL=${DATABASE_URL_DOCKER}
     depends_on:
       sqlserver:
         condition: service_healthy
