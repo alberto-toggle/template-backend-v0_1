@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
 import type { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { buildApiError, getStatusCode } from '@src/types/api-error.js';
+import { buildApiError, getStatusCode } from '@src/dto/api-error.dto.js';
 
 export async function registerErrorHandler(fastify: FastifyInstance) {
   fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {

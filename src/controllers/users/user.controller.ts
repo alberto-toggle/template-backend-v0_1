@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { CreateUserDto } from '@src/dto/users/create-user.dto.js';
 import { createUser, getUserById } from '@src/services/users/user.service.js';
-import { buildApiError } from '@src/types/api-error.js';
+import { buildApiError } from '@src/dto/api-error.dto.js';
 
 export async function createUserHandler(
   request: FastifyRequest<{ Body: CreateUserDto }>,
