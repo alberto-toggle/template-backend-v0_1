@@ -3,12 +3,15 @@ import { env } from '@src/config/env.js';
 
 const logLevel = env.LOG_LEVEL;
 const nodeEnv = process.env.NODE_ENV || 'development';
+const isDevelopment = nodeEnv === 'development';
+const isTest = nodeEnv === 'test';
+const isTTY = process.stdout.isTTY;
 
 /** Pino options used by Fastify and createLogger */
 const loggerOptions: pino.LoggerOptions = {
   name: env.SERVICE_NAME,
   level: logLevel,
-  ...(nodeEnv === 'development' && {
+  ...((isDevelopment || (isTest && isTTY)) && {
     transport: {
       target: 'pino-pretty',
       options: {
@@ -28,7 +31,6 @@ const loggerOptions: pino.LoggerOptions = {
     timestamp: pino.stdTimeFunctions.isoTime
   }),
   base: {
-    service: env.SERVICE_NAME,
     version: env.SERVICE_VERSION,
     environment: nodeEnv
   }

@@ -1,4 +1,5 @@
-import { Ajv, type JSONSchemaType } from 'ajv';
+import { type JSONSchemaType } from 'ajv';
+import { validateWithAjv } from '@src/utils/validation.utils.js';
 
 export interface EnvConfig {
   SERVICE_NAME: string;
@@ -21,9 +22,6 @@ const schema: JSONSchemaType<EnvConfig> = {
   additionalProperties: true
 };
 
-const ajv = new Ajv({ allErrors: true, coerceTypes: true });
-const validate = ajv.compile(schema);
-
 const envData = {
   SERVICE_NAME: process.env.SERVICE_NAME ?? 'microservice-name',
   SERVICE_VERSION: process.env.SERVICE_VERSION ?? process.env.npm_package_version ?? '0.1.0',
@@ -32,9 +30,14 @@ const envData = {
   DATABASE_URL: process.env.DATABASE_URL ?? ''
 };
 
-if (!validate(envData)) {
-  const errors = validate.errors?.map((e) => `${e.instancePath} ${e.message}`).join(', ');
+const validation = validateWithAjv<EnvConfig>(schema, envData, {
+  correlationId: 'system-startup',
+  url: 'process.env'
+});
+
+if (!validation.success) {
+  const errors = validation.errors?.map((e) => `${e.field}: ${e.message}`).join(', ');
   throw new Error(`Invalid environment configuration: ${errors}`);
 }
 
-export const env = envData;
+export const env = validation.data as EnvConfig;

@@ -11,9 +11,10 @@ const schema = {
 
 test('validateWithAjv validates schema and data', () => {
   const validResult = validateWithAjv(schema, { name: 'Ok' });
-  expect(validResult.valid).toBe(true);
+  expect(validResult.success).toBe(true);
+  expect(validResult.data).toEqual({ name: 'Ok' });
 
   const invalidResult = validateWithAjv(schema, { name: '' });
-  expect(invalidResult.valid).toBe(false);
-  expect(invalidResult.errors.length).toBeGreaterThan(0);
+  expect(invalidResult.success).toBe(false);
+  expect(invalidResult.errors?.length).toBeGreaterThan(0);
 });
